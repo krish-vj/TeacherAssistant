@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Analyzer for Teachers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+        }
+        input[type="file"], input[type="text"], input[type="submit"] {
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Analyzer for Teachers</h1>
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+            <label for="pdf_file">Select PDF file:</label>
+            <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
+            
+            <label for="spell_check">
+                <input type="checkbox" id="spell_check" name="spell_check" checked>
+                Enable Spell Check
+            </label>
+            
+            <label for="grammar_check">
+                <input type="checkbox" id="grammar_check" name="grammar_check" checked>
+                Enable Grammar Check
+            </label>
+            
+            <label for="keywords">Keywords (comma-separated):</label>
+            <input type="text" id="keywords" name="keywords" placeholder="e.g., important, crucial, significant">
+            
+            <label for="spell_color">Spelling Highlight Color:</label>
+            <input type="color" id="spell_color" name="spell_color" value="#FFFF00">
+            
+            <label for="grammar_color">Grammar Highlight Color:</label>
+            <input type="color" id="grammar_color" name="grammar_color" value="#FFC0CB">
+            
+            <label for="keyword_color">Keyword Highlight Color:</label>
+            <input type="color" id="keyword_color" name="keyword_color" value="#90EE90">
+            
+            <input type="submit" value="Upload and Analyze">
+        </form>
+    </div>
+</body>
+</html>
