@@ -7,6 +7,7 @@ import fitz  # PyMuPDF
 from spellchecker import SpellChecker
 import string
 import language_tool_python  # For grammar checking
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.template_folder=os.path.abspath('template')
@@ -20,10 +21,6 @@ ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 # Replace with your Azure Computer Vision API key and endpoint
-
-
-from dotenv import load_dotenv
-import os
 
 # Load environment variables from .env file
 load_dotenv()
