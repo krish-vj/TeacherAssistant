@@ -1,0 +1,7 @@
+pip install Flask
+pip install Werkzeug
+pip install requests
+pip install PyMuPDF
+pip install pyspellchecker
+pip install language-tool-python
+pip install python-dotenv
