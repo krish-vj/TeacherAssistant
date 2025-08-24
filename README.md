@@ -1,7 +1,6 @@
 # Teacher Assistant
 
 [![Watch the video](https://img.shields.io/badge/Demo-Video-blue?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=JWd_7I_x4Fc)
-
 ## 📖 Description
 
 A virtual classroom management web App, with google document api, gemini LLM and Plagiarism detection integration. It performs OCR on the student submissions and provide plagiarism reports and template evaluation to the teacher/admin of classroom. It also provides feedback to students for areas of imporvement.
