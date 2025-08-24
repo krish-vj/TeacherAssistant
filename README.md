@@ -1,6 +1,6 @@
 # Teacher Assistant
 
-[![Watch the video](https://img.shields.io/badge/Demo-Video-blue?style=for-the-badge&logo=youtube)]([https://www.youtube.com/watch?v=your_video_id_here](https://youtu.be/JWd_7I_x4Fc))
+[![Watch the video](https://img.shields.io/badge/Demo-Video-blue?style=for-the-badge&logo=youtube)]([https://www.youtube.com/watch?v=JWd_7I_x4Fc])
 
 ## 📖 Description
 
