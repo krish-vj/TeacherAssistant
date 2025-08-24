@@ -1,1 +1,4 @@
-
+google-cloud-documentai
+Flask
+google-generativeai
+Flask-SQLAlchemy
