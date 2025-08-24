@@ -1,6 +1,6 @@
 # Teacher Assistant
 
-[![Watch the video](https://img.shields.io/badge/Demo-Video-blue?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=your_video_id_here)
+[![Watch the video](https://img.shields.io/badge/Demo-Video-blue?style=for-the-badge&logo=youtube)]([https://www.youtube.com/watch?v=your_video_id_here](https://youtu.be/JWd_7I_x4Fc))
 
 ## 📖 Description
 
@@ -37,21 +37,12 @@ Google Gemini API key
     ```
 4.  **Run the application**
     ```sh
-    npm start
-    # or
     python app.py
     ```
 
-## ✨ Features
-
-- Feature 1
-- Feature 2
-- Feature 3
 
 ## 🛠️ Built With
-
-* [React](https://reactjs.org/) - The web framework used
-* [Node.js](https://nodejs.org/) - Backend runtime environment
-* [MongoDB](https://www.mongodb.com/) - Database
+Python with Flask
+HTML CSS Tailwind
 
 
