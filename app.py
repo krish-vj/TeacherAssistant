@@ -19,13 +19,12 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO, 
                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-# Document AI configuration
-DOCUMENT_AI_PROJECT_ID = os.environ.get('DOCUMENT_AI_PROJECT_ID', 'finalproject313')
-DOCUMENT_AI_LOCATION = os.environ.get('DOCUMENT_AI_LOCATION', 'us')
-DOCUMENT_AI_PROCESSOR_ID = os.environ.get('DOCUMENT_AI_PROCESSOR_ID', '4635f27c2e2707fb')
+# Document AI and Gemini configuration 
+DOCUMENT_AI_PROJECT_ID = os.environ.get('DOCUMENT_AI_PROJECT_ID', 'yourProjectDir')
+DOCUMENT_AI_LOCATION = os.environ.get('DOCUMENT_AI_LOCATION', 'replaceWIthYourStuff')
+DOCUMENT_AI_PROCESSOR_ID = os.environ.get('DOCUMENT_AI_PROCESSOR_ID', 'replaceWithYourId')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
-#new one:
-# Configure Gemini
+
 
 if not GEMINI_API_KEY:
     logger.warning("GEMINI_API_KEY not found in environment. Using fallback method.")
@@ -1061,4 +1060,5 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
 
