@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-4">{{ assignment.title }}</h1>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Assignment Details Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Assignment Details</h5>
+                        <a href="{{ url_for('view_class', class_id=class_obj.id) }}" class="btn btn-sm btn-outline-secondary">
+                            Back to Class
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ assignment.description }}</p>
+                    
+                    {% if assignment.attachment %}
+                        <p class="card-text">
+                            <a href="{{ url_for('static', filename='uploads/' + assignment.attachment) }}" 
+                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                Download Assignment File
+                            </a>
+                        </p>
+                    {% endif %}
+                    
+                    {% if assignment.ideal_answer_attachment %}
+                        <p class="card-text">
+                            <a href="{{ url_for('static', filename='uploads/' + assignment.ideal_answer_attachment) }}" 
+                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                Download Ideal Answer
+                            </a>
+                            <span class="ms-2 badge bg-primary">
+                                {{ "Visible to students" if assignment.ideal_answer_visible else "Hidden from students" }}
+                            </span>
+                        </p>
+                    {% endif %}
+                    
+                    {% if assignment.due_date %}
+                        <p class="card-text">
+                            <strong>Due Date:</strong> {{ assignment.due_date.strftime('%Y-%m-%d %H:%M') }}
+                        </p>
+                    {% endif %}
+                    
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Posted on {{ assignment.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Student Submissions Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Student Submissions</h5>
+                </div>
+                <div class="card-body">
+                    {% if submissions %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Submission Date</th>
+                                    <th>Plagiarism Score</th>
+                                    <th>AI Evaluation</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for submission in submissions %}
+                                <tr>
+                                    <td>{{ users[submission.user_id] }}</td>
+                                    <td>{{ submission.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        {% if submission.id in plagiarism_data %}
+                                        <span class="{% if plagiarism_data[submission.id].likelihood > 75 %}text-danger{% elif plagiarism_data[submission.id].likelihood > 50 %}text-warning{% else %}text-success{% endif %}">
+                                            {{ plagiarism_data[submission.id].likelihood|round(1) }}%
+                                        </span>
+                                        {% else %}
+                                        <span class="text-muted">Not analyzed</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if submission.text_content %}
+                                        <a href="{{ url_for('view_ai_evaluation', submission_id=submission.id) }}" class="btn btn-sm btn-success">
+                                            See AI Evaluation
+                                        </a>
+                                        {% else %}
+                                        <span class="text-muted">No text content</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('view_submission', submission_id=submission.id) }}" class="btn btn-sm btn-primary">View</a>
+                                        {% if submission.id in plagiarism_data %}
+                                        <a href="{{ url_for('view_plagiarism_results', submission_id=submission.id) }}" class="btn btn-sm btn-warning">Plagiarism Report</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p class="text-center">No submissions yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

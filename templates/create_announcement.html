@@ -1,0 +1,31 @@
+<!-- templates/create_announcement.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-4">Create Announcement</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">New Announcement</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('create_announcement', class_id=class_id) }}" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Announcement Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="attachment" class="form-label">Study Material (Optional)</label>
+                            <input type="file" class="form-control" id="attachment" name="attachment">
+                            <div class="form-text">Upload any files that students might need.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Announcement</button>
+                        <a href="{{ url_for('view_class', class_id=class_id) }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

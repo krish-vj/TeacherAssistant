@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Header with Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Plagiarism Analysis Report</h1>
+        <a href="{{ url_for('view_assignment', assignment_id=submission.assignment_id, submission_id=submission.submission_id) }}" class="btn btn-outline-secondary">
+            Back to Assignment
+        </a>
+    </div>
+
+    <!-- Submission Information Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Submission Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Student:</strong> {{ users[submission.user_id] }}</p>
+                    <p><strong>Assignment:</strong> {{ assignment.title }}</p>
+                    <p><strong>Submitted:</strong> {{ submission.submitted_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Class:</strong> {{ class_obj.title }}</p>
+                    <p><strong>Due Date:</strong> {{ assignment.due_date.strftime('%Y-%m-%d %H:%M') if assignment.due_date else 'None' }}</p>
+                    <p>
+                        <a href="{{ url_for('static', filename='uploads/' + submission.attachment) }}" 
+                           target="_blank" class="btn btn-sm btn-outline-primary">
+                            View Submission
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overall Summary Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Overall Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-4 mb-3">
+                    <div class="border rounded p-3">
+                        <h5 class="text-muted mb-1">Total Comparisons</h5>
+                        <h2>{{ plagiarism_results|length }}</h2>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="border rounded p-3">
+                        <h5 class="text-muted mb-1">Highest Match</h5>
+                        {% set highest_match = plagiarism_results|map(attribute='plagiarism_likelihood')|max %}
+                        <h2 class="{% if highest_match > 75 %}text-danger{% elif highest_match > 50 %}text-warning{% else %}text-success{% endif %}">
+                            {{ "%.1f"|format(highest_match) }}%
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="border rounded p-3">
+                        <h5 class="text-muted mb-1">Average Match</h5>
+                        {% set avg_match = plagiarism_results|map(attribute='plagiarism_likelihood')|list|sum / plagiarism_results|length %}
+                        <h2 class="{% if avg_match > 75 %}text-danger{% elif avg_match > 50 %}text-warning{% else %}text-success{% endif %}">
+                            {{ "%.1f"|format(avg_match) }}%
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Comparisons -->
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Detailed Comparisons</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="accordion" id="accordionPlagiarism">
+                {% for result in plagiarism_results %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ result.id }}">
+                        <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#collapse{{ result.id }}" 
+                                aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" 
+                                aria-controls="collapse{{ result.id }}">
+                            <div class="d-flex justify-content-between w-100 align-items-center me-3">
+                                <span>
+                                    Compared with {{ users[compared_submissions[result.compared_submission_id].user_id] }}
+                                </span>
+                                <span class="badge {% if result.plagiarism_likelihood > 75 %}bg-danger{% elif result.plagiarism_likelihood > 50 %}bg-warning text-dark{% else %}bg-success{% endif %} rounded-pill">
+                                    {{ "%.1f"|format(result.plagiarism_likelihood) }}%
+                                </span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse{{ result.id }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                         aria-labelledby="heading{{ result.id }}" data-bs-parent="#accordionPlagiarism">
+                        <div class="accordion-body">
+                            <!-- Similarity Metrics -->
+                            <div class="row mb-4">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 bg-light">
+                                        <div class="card-body text-center py-3">
+                                            <h6 class="card-title text-muted">Sequence Similarity</h6>
+                                            <h3 class="mb-0">{{ "%.1f"|format(result.sequence_similarity * 100) }}%</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 bg-light">
+                                        <div class="card-body text-center py-3">
+                                            <h6 class="card-title text-muted">Cosine Similarity</h6>
+                                            <h3 class="mb-0">{{ "%.1f"|format(result.cosine_similarity * 100) }}%</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 bg-light">
+                                        <div class="card-body text-center py-3">
+                                            <h6 class="card-title text-muted">Trigram Overlap</h6>
+                                            <h3 class="mb-0">{{ "%.1f"|format(result.trigram_overlap * 100) }}%</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exact Matches -->
+                            {% if result.exact_matches %}
+                            <div class="mt-3">
+                                <h6 class="mb-3">Matching Phrases ({{ result.total_matches }})</h6>
+                                <div class="list-group overflow-auto" style="max-height: 300px;">
+                                    {% for match in result.exact_matches|from_json %}
+                                    <div class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Match #{{ loop.index }}</h6>
+                                            <small class="text-muted">{{ match.length }} characters</small>
+                                        </div>
+                                        <p class="mb-1 bg-warning bg-opacity-10 p-2 rounded">{{ match.text }}</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-info">
+                                No exact phrase matches were found, but other similarity metrics indicate potential similarity.
+                            </div>
+                            {% endif %}
+
+                            <!-- Submission links -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ url_for('view_submission', submission_id=submission.id) }}" 
+                                   class="btn btn-primary" target="_blank">
+                                    View This Submission
+                                </a>
+                                <a href="{{ url_for('view_submission', submission_id=result.compared_submission_id) }}" 
+                                   class="btn btn-secondary" target="_blank">
+                                    View Compared Submission
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Action Buttons -->
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('export_plagiarism_report', submission_id=submission.id) }}" class="btn btn-success me-2">
+            <i class="fas fa-file-export"></i> Export Report
+        </a>
+        <a href="{{ url_for('run_class_analysis', class_id=class_obj.id, assignment_id=assignment.id) }}" class="btn btn-info me-2">
+            <i class="fas fa-sync"></i> Re-run Analysis
+        </a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#flagSubmissionModal">
+            <i class="fas fa-flag"></i> Flag Submission
+        </button>
+    </div>
+
+    <!-- Flag Submission Modal -->
+    <div class="modal fade" id="flagSubmissionModal" tabindex="-1" aria-labelledby="flagSubmissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flagSubmissionModalLabel">Flag Submission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('flag_submission', submission_id=submission.id) }}" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="flagReason" class="form-label">Reason</label>
+                            <select class="form-select" id="flagReason" name="reason" required>
+                                <option value="" selected disabled>Select a reason</option>
+                                <option value="plagiarism">Confirmed Plagiarism</option>
+                                <option value="unauthorized_aid">Unauthorized Aid</option>
+                                <option value="contract_cheating">Contract Cheating</option>
+                                <option value="other">Other (specify below)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="flagComments" class="form-label">Comments</label>
+                            <textarea class="form-control" id="flagComments" name="comments" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Flag Submission</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    // Add custom filter for parsing JSON in Jinja
+    if (!('from_json' in Jinja2.filters)) {
+        Jinja2.filters.from_json = function(value) {
+            return JSON.parse(value || '[]');
+        };
+    }
+    
+    // Initialize any Bootstrap tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

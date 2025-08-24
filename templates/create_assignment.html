@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-4">Create Assignment</h1>
+
+    <div class="card">
+        <div class="card-header">New Assignment</div>
+        <div class="card-body">
+            <form action="{{ url_for('create_assignment', class_id=class_id) }}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="attachment" class="form-label">Attachment (optional)</label>
+                    <input type="file" class="form-control" id="attachment" name="attachment">
+                    <div class="form-text">Upload any file that students may need for the assignment.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="ideal_answer" class="form-label">Ideal Answer Sheet (optional)</label>
+                    <input type="file" class="form-control" id="ideal_answer" name="ideal_answer">
+                    <div class="form-text">Upload a model answer to use as a reference for AI evaluation.</div>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="ideal_answer_visible" name="ideal_answer_visible">
+                    <label class="form-check-label" for="ideal_answer_visible">Make ideal answer visible to students</label>
+                </div>
+                <div class="mb-3">
+                    <label for="due_date" class="form-label">Due Date (optional)</label>
+                    <input type="datetime-local" class="form-control" id="due_date" name="due_date">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Assignment</button>
+                <a href="{{ url_for('view_class', class_id=class_id) }}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

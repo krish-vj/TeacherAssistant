@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="mb-4">Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Class Management</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('create_class') }}" class="btn btn-primary">Create a Class</a>
+                        <a href="{{ url_for('join_class') }}" class="btn btn-secondary">Join a Class</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Your Classes</h5>
+                </div>
+                <div class="card-body">
+                    {% if classes %}
+                        <div class="list-group">
+                            {% for class in classes %}
+                                <a href="{{ url_for('view_class', class_id=class.id) }}" class="list-group-item list-group-item-action">
+                                    {{ class.title }}
+                                    {% if class.is_teacher %}
+                                        <span class="badge bg-primary float-end">Teacher</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary float-end">Student</span>
+                                    {% endif %}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-center">You haven't joined any classes yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

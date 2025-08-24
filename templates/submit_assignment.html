@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-4">Submit Assignment: {{ assignment.title }}</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Assignment Details</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ assignment.description }}</p>
+                    
+                    {% if assignment.attachment %}
+                        <p class="card-text">
+                            <a href="{{ url_for('static', filename='uploads/' + assignment.attachment) }}" 
+                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                Download Assignment File
+                            </a>
+                        </p>
+                    {% endif %}
+                    
+                    {% if assignment.due_date %}
+                        <p class="card-text">
+                            <strong>Due Date:</strong> {{ assignment.due_date.strftime('%Y-%m-%d %H:%M') }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Your Submission</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('submit_assignment', assignment_id=assignment.id) }}" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Comment (Optional)</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3">{{ existing_submission.comment if existing_submission else '' }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="attachment" class="form-label">Attachment</label>
+                            <input type="file" class="form-control" id="attachment" name="attachment">
+                            {% if existing_submission and existing_submission.attachment %}
+                                <div class="form-text">
+                                    Current file: {{ existing_submission.attachment }}
+                                    <a href="{{ url_for('static', filename='uploads/' + existing_submission.attachment) }}" 
+                                       target="_blank">View</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ 'Update Submission' if existing_submission else 'Submit Assignment' }}</button>
+                        <a href="{{ url_for('view_assignment', assignment_id=assignment.id) }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

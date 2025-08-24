@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
+    <img class="m-header__image m-header__image--pc me-2" 
+    src="{{ url_for('static', filename='images/final.png') }}"
+    alt="VClass" style="height: 250px;">
+    <h1 class="display-4 text-center mb-4">Welcome to <strong>VClass</strong></h1>
+    <p class="lead text-center mb-5">The New and Improved Way of Managing Classes!</p>
+    <div class="d-flex gap-3">
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-5">Login</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-outline-primary btn-lg px-5">Sign Up</a>
+    </div>
+</div>
+{% endblock %}

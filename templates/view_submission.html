@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ assignment.title }} - Submission by {{ student.name }}</h2>
+
+<div class="card mt-4">
+    <div class="card-header">Submission Info</div>
+    <div class="card-body">
+        <p><strong>Submitted At:</strong> {{ submission.submitted_at.strftime('%Y-%m-%d %H:%M') if submission.submitted_at else "Not submitted" }}</p>
+        <p><strong>Comment:</strong> {{ submission.comment or "No comment" }}</p>
+        {% if submission.attachment %}
+            <p><a href="{{ url_for('static', filename='uploads/' + submission.attachment) }}" target="_blank">Download Submitted File</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

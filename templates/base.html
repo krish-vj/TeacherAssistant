@@ -1,0 +1,377 @@
+
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VClass</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+           :root {
+        /* Light mode variables */
+        --bg-color: #ffffff;
+        --text-color: #212529;
+        --sidebar-bg: #f8f9fa;
+        --sidebar-border: #dee2e6;
+        --sidebar-hover: #e9ecef;
+    }
+    [data-theme="dark"] {
+    /* Dark mode variables */
+    --bg-color: #222;
+    --text-color: #f8f9fa;
+    --sidebar-bg: #333;
+    --sidebar-border: #444;
+    --sidebar-hover: #444;
+    
+    /* Bootstrap component colors for dark mode */
+    --card-bg: #333;
+    --card-border: #444;
+    --card-header: #444;
+    --btn-outline-color: #f8f9fa;
+    --text-muted: #adb5bd;
+    
+    /* Table styles for dark mode */
+    --table-bg: #333;
+    --table-border: #444;
+    --table-color: #f8f9fa;
+    --table-hover-bg: #3a3a3a;
+    --table-striped-bg: #2d2d2d;
+}
+/* List group styles for dark mode */
+[data-theme="dark"] .list-group-flush .list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--card-border);
+}
+
+/* Ensure badge colors remain visible in dark mode */
+[data-theme="dark"] .badge.bg-primary {
+    background-color: #0d6efd !important;
+    color: #fff;
+}
+
+.submission-info p {
+    color: #212529; /* Default Bootstrap dark text */
+}
+
+/* When dark mode is active */
+body.dark-mode .submission-info p {
+    color: #f8f9fa; /* Light text */
+}
+
+/* Additional styling for dark mode */
+[data-theme="dark"] .sidebar {
+    background-color: var(--sidebar-bg);
+    border-right-color: var(--sidebar-border);
+}
+
+[data-theme="dark"] .sidebar a {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .sidebar a:hover {
+    background-color: var(--sidebar-hover);
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .card-header {
+    background-color: var(--card-header);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary, 
+[data-theme="dark"] .btn-outline-primary {
+    color: var(--btn-outline-color);
+    border-color: var(--btn-outline-color);
+}
+
+/* Table styles for dark mode */
+[data-theme="dark"] .table {
+    color: var(--table-color);
+    border-color: var(--table-border);
+}
+
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td {
+    border-color: var(--table-border);
+}
+
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--table-striped-bg);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+    background-color: var(--table-hover-bg);
+}
+
+/* Keep text colors consistent in dark mode */
+[data-theme="dark"] .text-success {
+    color: #28a745 !important;
+}
+
+[data-theme="dark"] .text-warning {
+    color: #ffc107 !important;
+}
+
+[data-theme="dark"] .text-danger {
+    color: #dc3545 !important;
+}
+
+    [data-theme="dark"] {
+        /* Dark mode variables */
+        --bg-color: #222;
+        --text-color: #f8f9fa;
+        --sidebar-bg: #333;
+        --sidebar-border: #444;
+        --sidebar-hover: #444;
+    }
+    [data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .card-header {
+    background-color: var(--card-header);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary, 
+[data-theme="dark"] .btn-outline-primary {
+    color: var(--btn-outline-color);
+    border-color: var(--btn-outline-color);
+}
+
+    body {
+        padding-top: 60px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .sidebar {
+        height: 100vh;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        padding-top: 20px;
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--sidebar-border);
+        overflow-y: auto;
+    }
+
+    .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+        color: var(--text-color);
+    }
+
+    .sidebar a:hover {
+        background-color: var(--sidebar-hover);
+    }
+        body {
+            padding-top: 60px; /* Add padding to account for the fixed navbar */
+        }
+        .bg-primary {
+    background-color: #110914 !important;
+}
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 60px; /* Start below the navbar */
+            left: 0;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            overflow-y: auto; /* Allow scrolling if content is too long */
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            color: #212529;
+        }
+        .sidebar a:hover {
+            background-color: #e9ecef;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                height: auto;
+                padding-top: 0;
+                top: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" style="background-color: #110914;">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') if 'user_id' in session else url_for('index') }}">
+                <img class="m-header__image m-header__image--pc me-2" 
+                     src="{{ url_for('static', filename='images/final.png') }}"
+                     alt="VClass" style="height: 40px;">
+                <span class="navbar-title">VClass</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if 'user_id' in session %}
+                    <li class="nav-item">
+                        <button id="darkModeToggle" class="btn btn-outline-light ms-2">Theme 🌙</button>
+                    </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light ms-2 nav-link" href="{{url_for('profile')}}">{{ session['username'] }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light ms-2 nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <button id="darkModeToggle" class="btn btn-outline-light ms-2">🌙</button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
+                        <!-- Add this inside your navbar, maybe as the last <li> in the nav -->
+                        
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+
+    {% if 'user_id' in session %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                    <div class="position-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('create_class') }}">Create Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('join_class') }}">Join Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <hr>
+                            </li>
+                            <!-- Modify this section to fetch classes from the context processor -->
+                            {% set user_classes = get_user_classes() %}
+                            {% if user_classes %}
+                                {% for class in user_classes %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ url_for('view_class', class_id=class.id) }}">
+                                            {{ class.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        </div>
+    {% else %}
+        <div class="container mt-5">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block auth_content %}{% endblock %}
+        </div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggleBtn = document.getElementById('darkModeToggle');
+            
+            // Check for saved theme preference or use device preference
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Set initial theme
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = 'Theme ☀️';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.innerHTML = 'Theme 🌙';
+            }
+            
+            // Toggle theme when button is clicked
+            themeToggleBtn.addEventListener('click', function() {
+                let currentTheme = document.documentElement.getAttribute('data-theme');
+                let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Update button icon
+                themeToggleBtn.innerHTML = newTheme === 'dark' ? 'Theme ☀️' : 'Theme 🌙';
+            });
+        });
+    </script>
+</body>
+</html>
